@@ -7,7 +7,7 @@ This should be simple to read and easy to manipulate to your choosing. All impor
 ## Explanation
 Comprised of a simple phantom designed as a circle of 12 cm radius split in half and glued to a rectangle of width 15 cm. 
 The centre of the phantom is defined as the Isocentre.
-![](BriefExplanation.gif)
+![A Gif to explain](BriefExplanation.gif)
 
 ## Brief Overview of the code
 ```python
