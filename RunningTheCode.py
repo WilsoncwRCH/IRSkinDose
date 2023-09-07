@@ -113,7 +113,7 @@ class RunTheProgram:
         endtimer = time.time()
         
         print(f'Progressed to {100}% Completed!')
-        print(f'Total time = {(endtimer - starttime)/60} min')
+        print(f'Total time = {round((endtimer - starttime)/60, 2)} min')
         PROCESSED = pd.DataFrame(list(zip(Date, AccessionNumbers, operator, StudyDesc, Age, Sex, Height, Weight, TotalRP, TotalDAP, PeakSkinDose, Uncertainty)),
                                  columns = ['Date', 'Accession number', 'Operator', 'Study description', 'Age', 'Sex', 'Height', 'Weight', 'RPdose', 'DAP', 'PSD', 'unc'])
         self.TableofResults = PROCESSED
