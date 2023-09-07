@@ -4,13 +4,18 @@ Can be used to generate a dosemap for an individual patient, or to review an ent
 
 This should be simple to read and easy to manipulate to your choosing. All imports should be included as standard with your python 3+. 
 
+### What this includes
+- Python classes: Phantom, Patientdata and RunTheProgram. (Can be used to calculate Peak Skin Dose for one patient, the same patient who experienced multiple studies, or an entire database of patients)
+- Application: A basic GUI has also been created that can be used if you want to build a desktop usable version (see instructions below).
+- Foetal dose calculation: A rough work in progress that can assess foetal dose for exams focused on the Uterus or 
+
+
 ## Explanation of whats happening
 Comprised of a simple phantom designed as a circle of 12 cm radius split in half and glued to a rectangle of width 15 cm. 
 The centre of the phantom is defined as the Isocentre. Data is mapped onto this phantom and returned as a 2D image, dataframe and much more...
 
 ![Briefexp](https://github.com/WilsoncwRCH/IRSkinDose/assets/144329591/e8827087-26f3-4cd6-a752-283e121b43af)
 
-An application has also been created that can be used if you want a usable version (see instructions below).
 
 ## A Brief Overview of the code
 For a full example/instructions go to the example walkthrough notebook
