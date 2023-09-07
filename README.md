@@ -4,9 +4,10 @@ Can be used to generate a dosemap for an individual patient, or to review an ent
 
 This should be simple to read and easy to manipulate to your choosing. All imports should be included as standard with your python 3+. 
 
-## Explanation
+## Explanation of whats happening
 Comprised of a simple phantom designed as a circle of 12 cm radius split in half and glued to a rectangle of width 15 cm. 
-The centre of the phantom is defined as the Isocentre.
+The centre of the phantom is defined as the Isocentre. Explanation below
+
 ![Briefexp](https://github.com/WilsoncwRCH/IRSkinDose/assets/144329591/e8827087-26f3-4cd6-a752-283e121b43af)
 
 ## Brief Overview of the code
