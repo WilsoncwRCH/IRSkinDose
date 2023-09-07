@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Aug 21 15:27:01 2023
-
-@author: Wilsoncw
-"""
 
 #First import all the relevant functions
 import numpy as np
@@ -107,7 +101,7 @@ file = 'TestData.xlsx'
 df = XLSXtoDATAFRAME(file)
 DF = loopcalc(df, ConversionValues)
 print(DF)
-#DF.to_csv('C:/Users/Wilsoncw/Documents/CT/Estimating Foetal dose/Outputs.csv', encoding='utf-8', index=False)
+#DF.to_csv('Outputs.csv', encoding='utf-8', index=False)
 
 
         
