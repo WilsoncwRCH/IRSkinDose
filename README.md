@@ -17,12 +17,13 @@ This should be simple to read and easy to manipulate to your choosing. All impor
 
 
 ## Explanation of whats happening
+
 Comprised of a simple phantom designed as a circle of 12 cm radius split in half and glued to a rectangle of width 15 cm. 
 The centre of the phantom is defined as the Isocentre. Data is mapped onto this phantom and returned as a 2D image, dataframe and much more...
 
 ![Briefexp](https://github.com/WilsoncwRCH/IRSkinDose/assets/144329591/e8827087-26f3-4cd6-a752-283e121b43af)
 
-
+We opted away from a vector model due to a number of unlikely events occuring in dataframes and a no need to move the isocentre. This may also improve our RunTimes.
 ## A Brief Overview of the code
 For a full example/instructions go to the example walkthrough notebook
 
