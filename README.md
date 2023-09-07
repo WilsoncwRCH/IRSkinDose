@@ -10,13 +10,15 @@ The centre of the phantom is defined as the Isocentre. Data is mapped onto this 
 
 ![Briefexp](https://github.com/WilsoncwRCH/IRSkinDose/assets/144329591/e8827087-26f3-4cd6-a752-283e121b43af)
 
-An App has also been created.
+An application has also been created that can be used if you want a usable version (see instructions below).
 
-## Brief Overview of the code
-For a full example go to the example walkthrough notebook
+## A Brief Overview of the code
+For a full example/instructions go to the example walkthrough notebook
 
 ```python
+'''This is just an overview of the most powerful functions'''
 from RunningTheCode import RunTheProgram
+
 
 '''Get The Data'''
 #Define the location of the OpenREM export
@@ -34,7 +36,19 @@ PData = UseTestdata.IndividualsData(AccessionNumber) #Plots a map of skin dose a
 #Or we can review the entire file and export 
 EntireSet = UseTestdata.Entiredataset() #EntireSet is a dataframe containing PSD estimates for every different accession in the .xlsx file
 ```
-Good Luck
+
+## Application Instructions
+To see how the app works, run the code for BuildintoApplication.py.
+It's self explanatory, 
+1. Select the .xlsx export you want to review.
+2. Add any individuals accession numbers (can be multiple if you want to sum exams).
+3. Press IndividualPatient to view said patients skindosemap and also their PSD.
+4. Press ExportProcessedData to calculate PSDs for all patients in the .xlsx export and return a .csv file
+ 
+To build into a desktop application / executable, use pyinstaller (pip install pyinstaller) and follow the instructions online
+
+#
+best of luck!
 
 
 
