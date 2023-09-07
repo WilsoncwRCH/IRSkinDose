@@ -5,9 +5,15 @@ Can be used to generate a dosemap for an individual patient, or to review an ent
 This should be simple to read and easy to manipulate to your choosing. All imports should be included as standard with your python 3+. 
 
 ### What this includes
-- Python classes: Phantom, Patientdata and RunTheProgram. (Can be used to calculate Peak Skin Dose for one patient, the same patient who experienced multiple studies, or an entire database of patients)
+- Python classes:
+  
+  RunTheProgram (Can be used to calculate Peak Skin Dose for one patient, the same patient who experienced multiple studies, or an entire database of patients)
+  
+  Patientdata (Object containing anynumber of patient metrics. Also plots the Skindosemap)
+  
+  Phantom (Defines dimensions of phantom based on patient geometries then calculates relevant coordinates)
 - Application: A basic GUI has also been created that can be used if you want to build a desktop usable version (see instructions below).
-- Foetal dose calculation: A rough work in progress that can assess foetal dose for exams focused on the Uterus or 
+- Foetal dose calculation: A rough work in progress that can assess foetal dose for exams focused on the Uterus or elsewhere (Liver).
 
 
 ## Explanation of whats happening
