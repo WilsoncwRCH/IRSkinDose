@@ -59,7 +59,7 @@ It's self explanatory,
 To build into a desktop application / executable, use pyinstaller (pip install pyinstaller) and follow the instructions online
 
 #
-best of luck!
+Best of luck!
 
 
 
