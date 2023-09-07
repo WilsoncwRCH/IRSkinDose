@@ -6,9 +6,11 @@ This should be simple to read and easy to manipulate to your choosing. All impor
 
 ## Explanation of whats happening
 Comprised of a simple phantom designed as a circle of 12 cm radius split in half and glued to a rectangle of width 15 cm. 
-The centre of the phantom is defined as the Isocentre. Data from an OpenREM export should explain the 
+The centre of the phantom is defined as the Isocentre. Data is mapped onto this phantom and returned as a 2D image, dataframe and much more...
 
 ![Briefexp](https://github.com/WilsoncwRCH/IRSkinDose/assets/144329591/e8827087-26f3-4cd6-a752-283e121b43af)
+
+An App has also been created.
 
 ## Brief Overview of the code
 For a full example go to the example walkthrough notebook
@@ -32,7 +34,7 @@ PData = UseTestdata.IndividualsData(AccessionNumber) #Plots a map of skin dose a
 #Or we can review the entire file and export 
 EntireSet = UseTestdata.Entiredataset() #EntireSet is a dataframe containing PSD estimates for every different accession in the .xlsx file
 ```
-
+Good Luck
 
 
 
