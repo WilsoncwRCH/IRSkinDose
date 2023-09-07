@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Import all the relevant functions
-
-@author: Wilsoncw
-"""
 
 #First import all the relevant functions
 import numpy as np
