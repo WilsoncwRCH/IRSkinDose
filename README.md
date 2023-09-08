@@ -25,8 +25,8 @@ The centre of the phantom is defined as the Isocentre. Data is mapped onto this 
 
 We opted away from a vector model due to a number of unlikely events occuring in dataframes and a no need to move the isocentre. This may also improve our RunTimes.
 ## A Brief Overview of the code
-For a full example/instructions go to the example walkthrough notebook
 
+The code can be run by pulling or copying our scripts 'runningthecode' and 'phantomandmap'.#For a full example/instructions go to the example walkthrough notebook.
 ```python
 '''This is just an overview of the most powerful functions'''
 from RunningTheCode import RunTheProgram
@@ -39,7 +39,6 @@ TestDataset = 'TestDataset.xlsx'
 #We can first get the data from out file using RunTheProgram.Dataframe
 UseTestdata = RunTheProgram(TestDataset)
 SourceData = UsetTestdata.Dataframe  #A pandas dataframe containing all the relevant information from the .xlsx
-
 
 '''We can use the Data as we please depending on what we want to do'''
 AccessionNumber = ['REFNu1'] #Patients identifier
