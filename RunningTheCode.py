@@ -72,7 +72,7 @@ class RunTheProgram:
         return PData
     
     
-    def EntireDataset(self, SDD = 1000, Saved = False):
+    def EntireDataset(self, SDD = 1000, Saved = False, Table = False):
         
         SourceData = self.Dataframe
         AccessionNumbers = SourceData['Accession number'].unique()
@@ -83,9 +83,9 @@ class RunTheProgram:
         for i in range(len(AccessionNumbers)):
             df = SourceData.loc[SourceData['Accession number'] == AccessionNumbers[i]]
         
-            PData = PatientData(df, SDD)
-            uperr = PData.PeakSkinDose - PatientData(df, SDD +150).PeakSkinDose 
-            downerr = PatientData(df, SDD -150).PeakSkinDose - PData.PeakSkinDose
+            PData = PatientData(df, SDD, Table)
+            uperr = PData.PeakSkinDose - PatientData(df, SDD + 150).PeakSkinDose 
+            downerr = PatientData(df, SDD - 150).PeakSkinDose - PData.PeakSkinDose
             uncertainty = round((max(uperr,downerr)), 4)
             
             Date.append(PData.Date)
