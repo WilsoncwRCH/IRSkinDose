@@ -21,7 +21,8 @@ This should be simple to read and easy to manipulate to your choosing. All impor
 Comprised of a simple phantom designed as a circle of 12 cm radius split in half and glued to a rectangle of width 15 cm. 
 The centre of the phantom is defined as the Isocentre. Data is mapped onto this phantom and returned as a 2D image, dataframe and much more...
 
-![Briefexp](https://github.com/WilsoncwRCH/IRSkinDose/assets/144329591/0c3ae797-8c22-4237-acfc-4dab7468faef)
+![Briefexp](https://github.com/WilsoncwRCH/IRSkinDose/assets/144329591/9fc73491-8640-4c1e-ba6c-be660ff24477)
+
 
 We opted away from a vector model due to a number of unlikely events occuring in dataframes and a no need to move the isocentre. This may also improve our RunTimes.
 ## A Brief Overview of the code
