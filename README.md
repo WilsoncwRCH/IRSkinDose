@@ -39,7 +39,7 @@ TestDataset = 'TestDataset.xlsx'
 
 #We can first get the data from out file using RunTheProgram.Dataframe
 UseTestdata = RunTheProgram(TestDataset)
-SourceData = UsetTestdata.Dataframe  #A pandas dataframe containing all the relevant information from the .xlsx
+SourceData = UseTestdata.Dataframe  #A pandas dataframe containing all the relevant information from the .xlsx
 
 '''We can use the Data as we please depending on what we want to do'''
 AccessionNumber = ['REFNu1'] #Patients identifier
