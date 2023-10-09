@@ -118,7 +118,7 @@ def EmptyHumanskin(Ps,Ss):
 
 class PatientData:
     
-    def __init__(self, df, SDD = 1000, Table = False):
+    def __init__(self, df, SDD = 1000, Table = False, BSC = False):
        
         df = df.reset_index()
         #H = df.at[0,'Height']
@@ -146,6 +146,7 @@ class PatientData:
         self.data = df
         self.SkinRound = [virtualP.PrimaryDisplacement,virtualP.SecondaryDisplacement]
         self.Table = Table
+        self.BSC = BSC
         
         self.DoseFrame = None
         self.PeakSkinDose = None
@@ -187,14 +188,24 @@ class PatientData:
                         currentcellvalue = frame.at[row, column]
                         newcellvalue = currentcellvalue + DosefromRPtoskin
                         frame.at[row,column] = newcellvalue
-                        
+        
+        #note these corrections need cleaning up properly, and have been written as such to be clear and obvious, without              
+        if self.BSC ==True:
+            for row in np.linspace(-1*Ps,Ps,2*Ps+1):
+                for column in np.linspace(-1*Ss,Ss,2*Ss+1):
+                    currentcellvalue = frame.at[row, column]
+                    newcellvalue = currentcellvalue*1.3
+                    frame.at[row,column] = newcellvalue
+            
         if self.Table == True:
             for row in np.linspace(-1*Ps,Ps,2*Ps+1):
                 for column in np.linspace(-1*Ss,Ss,2*Ss+1):
-                    if -1/2 * self.Flattenedwidth  < row < self.Flattenedwidth / 2:
+                    if -2/3 * self.Flattenedwidth  < row < 2 * self.Flattenedwidth / 3:
                         currentcellvalue = frame.at[row, column]
                         newcellvalue = currentcellvalue*0.85
                         frame.at[row,column] = newcellvalue
+                        
+        
                         
         self.DoseFrame = frame
         self.PeakSkinDose = frame.to_numpy().max()
