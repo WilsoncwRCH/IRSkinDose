@@ -3,6 +3,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import math
 import matplotlib
 import sys,time
 
@@ -118,7 +119,7 @@ def EmptyHumanskin(Ps,Ss):
 
 class PatientData:
     
-    def __init__(self, df, SDD = 1000, Table = False, BSC = False):
+    def __init__(self, df, SDD = 1000, Table = False, BSC = False, GreaterAccuracy = False):
        
         df = df.reset_index()
         #H = df.at[0,'Height']
@@ -150,7 +151,10 @@ class PatientData:
         
         self.DoseFrame = None
         self.PeakSkinDose = None
-        self.ToSkin()
+        if GreaterAccuracy == True:
+            self.SkinMapSlow()
+        else:
+            self.ToSkin()
         
         
     def ToSkin(self):
@@ -209,7 +213,66 @@ class PatientData:
                         
         self.DoseFrame = frame
         self.PeakSkinDose = frame.to_numpy().max()
+
+    def SkinMapSlow(self):
+        df = self.data
+        Ps, Ss = 40,40
+
+        frame = EmptyHumanskin(Ps,Ss)
+        RPD = df['Ref point dose (Gy)'].tolist() # these are all self explanatory
+        pa = df["Primary angle"].tolist()
+        sa = df["Secondary angle"].tolist()
+        fs = df['Field size'].tolist() #measured along diagonal
         
+        widthoffieldatdetector = [i/np.sqrt(2) for i in fs]
+        widthoffieldatRP = [i*60/self.SDD for i in widthoffieldatdetector]
+
+        Add = lambda s1,s2: s1 + s2
+
+        #Same as above get every beam, we just do slighlty more with it
+        for beam in range(len(RPD)):
+            P = Phantom(None, None, pa[beam], sa[beam],self.CurvatureRadius, self.Flattenedwidth)
+            
+            RPtoSkinSurface = P.CentreToBeamEntry - 15
+            wf = widthoffieldatRP[beam]
+            if RPtoSkinSurface != RPtoSkinSurface:
+                RPtoSkinSurface = 0
+            if wf != wf:
+                wf = 10
+
+            WidthAtSkin = wf * (60 + RPtoSkinSurface)/60
+            AnglePlusMinus = abs(math.degrees(math.atan(WidthAtSkin / (2*P.CentreToBeamEntry))))
+            RP = RPD[beam]
+            if RP != RP:
+                RP = 0
+
+            Locator = EmptyHumanskin(Ps,Ss)
+
+            for SAng in np.linspace(P.SecondaryAngle - AnglePlusMinus, P.SecondaryAngle + AnglePlusMinus, round(wf+2)):
+                for PAng in np.linspace(P.PrimaryAngle - AnglePlusMinus, P.PrimaryAngle + AnglePlusMinus, round(wf+2)):
+
+                    TempP = Phantom(None, None, PAng, SAng, self.CurvatureRadius, self.Flattenedwidth)
+                    y = TempP.PrimaryDisplacement
+                    x = TempP.SecondaryDisplacement
+                    Dose = RP * (60 / (60 - (TempP.CentreToBeamEntry - 15)))**2
+
+                    Locator.at[round(y), round(x)] = Dose
+
+            frame = frame.combine(Locator, Add)
+        
+        #Now add BSC correction:
+        frame *= 1.3
+        #Now add Table correction:
+        for row in np.linspace(-1*Ps,Ps,2*Ps+1):
+            for column in np.linspace(-1*Ss,Ss,2*Ss+1):
+                if -2/3 * self.Flattenedwidth  < row < 2 * self.Flattenedwidth / 3:
+                    currentcellvalue = frame.at[row, column]
+                    newcellvalue = currentcellvalue*0.85
+                    frame.at[row,column] = newcellvalue
+        
+        self.DoseFrame = frame
+        self.PeakSkinDose = frame.to_numpy().max()
+
         
     def PlotMap(self, Saved = False, Filetext = None):
         '''
