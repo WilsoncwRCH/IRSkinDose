@@ -43,7 +43,7 @@ def IndividualExam():
     accession = re.split(r"and|[\s,-]+" , ac)
     filename = pathh.get()
     file = f'{filename}'
-    PatientData = RunTheProgram(file).IndividualsData(accession)
+    PatientData = RunTheProgram(file).IndividualsData(accession, GreaterAccuracy=True)
     PatientData.ToSkin()
     result.set(PatientData.String)
     
