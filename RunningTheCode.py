@@ -18,6 +18,10 @@ class RunTheProgram:
     Or Can Run through an entiredata
     '''
     def __init__(self, file):
+        '''
+        Allows the user to extract what they need from the a .xlsx file
+        @file: The absolute path to the .xlsx export file
+        '''
         self.file = file
         self.Dataframe = None
         self.XLSXtoDATAFRAME()
@@ -44,8 +48,16 @@ class RunTheProgram:
         return
     
     
-    def IndividualsData(self, AccessionNumber, SDD = 1000, Saved = False, Filetext = None):
-        '''Processes Data for Individual Patient'''
+    def IndividualsData(self, AccessionNumber, SDD = 1000, Saved = False, Filetext = None, BSC = False, Table = False, GreaterAccuracy = False):
+        '''Processes Data for Individual Patient
+        @AccessionNumber: A list of the accession numbers for the patient. (normally one entry)
+        @SDD: Source detector distance / mm
+        @Saved: Should we save the images generated (bool)
+        @Filetext: If saved, where should we save it and what do we call it
+        @GreaterAccuracy: If true, runs a slower but more accurate version of the code
+        @Table: If true adds a table correction
+        @BSC: If true adds a backscatter correction
+        '''
         
         self.AccNo = AccessionNumber
         '''AccessionNumber Must take the form of a list'''
@@ -53,9 +65,9 @@ class RunTheProgram:
         SourceData = self.Dataframe
         df = SourceData.loc[SourceData['Accession number'].isin(AccessionNumber)]
         
-        PData = PatientData(df, SDD)
-        UPdata = PatientData(df, SDD +150)
-        DNdata = PatientData(df, SDD -150)
+        PData = PatientData(df, SDD,Table = Table, BSC = BSC,GreaterAccuracy = GreaterAccuracy)
+        UPdata = PatientData(df, SDD +150,Table = Table, BSC = BSC, GreaterAccuracy = GreaterAccuracy)
+        DNdata = PatientData(df, SDD -150,Table = Table, BSC = BSC, GreaterAccuracy = GreaterAccuracy)
         
         MSD = PData.PeakSkinDose
         uperr = PData.PeakSkinDose - UPdata.PeakSkinDose
@@ -72,7 +84,7 @@ class RunTheProgram:
         return PData
     
     
-    def EntireDataset(self, SDD = 1000, Saved = False, Table = False):
+    def EntireDataset(self, SDD = 1000, Saved = False, Table = False,BSC = False, GreaterAccuracy = False):
         
         SourceData = self.Dataframe
         AccessionNumbers = SourceData['Accession number'].unique()
@@ -83,9 +95,9 @@ class RunTheProgram:
         for i in range(len(AccessionNumbers)):
             df = SourceData.loc[SourceData['Accession number'] == AccessionNumbers[i]]
         
-            PData = PatientData(df, SDD, Table)
-            uperr = PData.PeakSkinDose - PatientData(df, SDD + 150).PeakSkinDose 
-            downerr = PatientData(df, SDD - 150).PeakSkinDose - PData.PeakSkinDose
+            PData = PatientData(df, SDD,Table = Table, BSC = BSC, GreaterAccuracy = GreaterAccuracy)
+            uperr = PData.PeakSkinDose - PatientData(df, SDD + 150,Table = Table, BSC = BSC, GreaterAccuracy = GreaterAccuracy).PeakSkinDose 
+            downerr = PatientData(df, SDD - 150,Table = Table, BSC = BSC, GreaterAccuracy = GreaterAccuracy).PeakSkinDose - PData.PeakSkinDose
             uncertainty = round((max(uperr,downerr)), 4)
             
             Date.append(PData.Date)
