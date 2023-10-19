@@ -118,9 +118,16 @@ def EmptyHumanskin(Ps,Ss):
     
 
 class PatientData:
-    
+
     def __init__(self, df, SDD = 1000, Table = False, BSC = False, GreaterAccuracy = False):
-       
+        '''
+        This is a class that extracts relevant patient data from a dataframe and calculates peakskindose
+        @df: The dataframe we extract from
+        @SDD: Source detector distance (mm)
+        @Table: Turn table correction on (if True)
+        @BSC: Turn Backscatter correction on (if True)
+        @GreaterAccuracy: If true, runs a more complex peak skin dose calculation.
+        '''
         df = df.reset_index()
         #H = df.at[0,'Height']
         #W = df.at[0,'Mass (kg)']
@@ -159,7 +166,7 @@ class PatientData:
         
     def ToSkin(self):
         
-        '''used inside the class, can choose to ignore/not use '''
+        '''Used inside the class, can choose to ignore/not use '''
         
         df = self.data
         
@@ -215,6 +222,9 @@ class PatientData:
         self.PeakSkinDose = frame.to_numpy().max()
 
     def SkinMapSlow(self):
+        '''
+        Used to produce a more accurate skinmap, this does however run roughly 4 times slower than 'ToSkin()'
+        '''
         df = self.data
         Ps, Ss = 40,40
 
