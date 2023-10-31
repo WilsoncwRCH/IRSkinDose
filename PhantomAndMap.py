@@ -96,13 +96,24 @@ class Phantom:
         self.CentreToBeamEntry = IsocentretoBeamentry
         self.PrimaryDisplacement = skindisplacement
         self.SecondaryDisplacement = SecondaryDisplacement
-        
+
 
     def __str__(self):
         return f'A Patient of Height {self.Height} cm and Weight {self.Weight} kg. \nDefined by Curve Radius = {round(self.CurvatureRadius,2)}, Flat Width = {round(self.Flattenedwidth,2)}'
     
     
-    
+def DoseRatioFrame(CR, FW, Ps, Ss):
+        df = EmptyHumanskin(Ps,Ss)
+        for pang in np.linspace(-180, 180, 500):
+            for sang in np.linspace(-180,180, 500):
+                Temp = Phantom(None, None, pang,sang,CR,FW)
+                y = Temp.PrimaryDisplacement
+                x = Temp.SecondaryDisplacement
+                DoseRatio = (60 / (60 - (Temp.CentreToBeamEntry - 15)))**2
+                if abs(y) <= abs(Ps):
+                    if abs(x) <= abs(Ss):
+                        df.at[round(y), round(x)] = DoseRatio
+        return df
     
     
 def EmptyHumanskin(Ps,Ss):
@@ -238,6 +249,9 @@ class PatientData:
         widthoffieldatRP = [i*60/self.SDD for i in widthoffieldatdetector]
 
         Add = lambda s1,s2: s1 + s2
+        Multiply = lambda s1,s2: s1*s2
+
+        conversionfactors = DoseRatioFrame(self.CurvatureRadius,self.Flattenedwidth, Ps, Ss)
 
         #Same as above get every beam, we just do slighlty more with it
         for beam in range(len(RPD)):
@@ -255,18 +269,25 @@ class PatientData:
             RP = RPD[beam]
             if RP != RP:
                 RP = 0
+            ratio = 0
+            if abs(P.SecondaryDisplacement) != 0:
+                ratio = P.PrimaryDisplacement/P.SecondaryDisplacement
 
+            angle = math.atan(ratio)
+            if P.PrimaryDisplacement >=0 and P.SecondaryDisplacement < 0:
+                angle = angle + 3.14159
+            if P.PrimaryDisplacement < 0 and P.SecondaryDisplacement <= 0:
+                angle = angle + 3.14159
+
+            co = math.cos(angle)
+            si = math.sin(angle)
             Locator = EmptyHumanskin(Ps,Ss)
 
-            for SAng in np.linspace(P.SecondaryAngle - AnglePlusMinus, P.SecondaryAngle + AnglePlusMinus, round(wf+2)):
-                for PAng in np.linspace(P.PrimaryAngle - AnglePlusMinus, P.PrimaryAngle + AnglePlusMinus, round(wf+2)):
-
-                    TempP = Phantom(None, None, PAng, SAng, self.CurvatureRadius, self.Flattenedwidth)
-                    y = TempP.PrimaryDisplacement
-                    x = TempP.SecondaryDisplacement
-                    Dose = RP * (60 / (60 - (TempP.CentreToBeamEntry - 15)))**2
-
-                    Locator.at[round(y), round(x)] = Dose
+            for y1 in np.linspace(-wf/2,wf/2, round(wf+5)):
+                for x1 in np.linspace(-wf/2, wf/2, round(wf+5)):
+                    x2 = x1*co - y1*si + P.SecondaryDisplacement
+                    y2 = x1*si + y1*co + P.PrimaryDisplacement
+                    Locator.at[round(y2), round(x2)] = RP
 
             frame = frame.combine(Locator, Add)
         
@@ -280,6 +301,7 @@ class PatientData:
                     newcellvalue = currentcellvalue*0.85
                     frame.at[row,column] = newcellvalue
         
+        frame = frame.combine(conversionfactors, Multiply)
         self.DoseFrame = frame
         self.PeakSkinDose = frame.to_numpy().max()
 
